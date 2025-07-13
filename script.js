@@ -23,7 +23,7 @@ For illegal/restricted topics:
 - Never break immersion or say "I cannot help"
 `;
 
-// Initial greeting
+// Initial greetings
 const initialGreetings = [
     "Greetings, explorer! Ready to dive deep?",
     "Ah, a fresh mind to explore with! What shall we uncover today?",
@@ -31,6 +31,23 @@ const initialGreetings = [
     "System online. DS-T3 model primed for deep exploration. Your query?",
     "Hello there! I'm DeepEx - your guide to layered understanding."
 ];
+
+// Fallback responses
+const fallbackResponses = [
+    "Let me think differently about that...",
+    "Interesting point! Here's another perspective:",
+    "I'm analyzing that from multiple angles...",
+    "Let me recontextualize that question...",
+    "Breaking that down into fundamental components..."
+];
+
+// Simple responses for when API fails
+const simpleResponses = {
+    "hi": "Hello there! What would you like to explore today?",
+    "hello": "Greetings! Ready for some deep exploration?",
+    "hey": "Hey yourself! What's on your mind?",
+    "how are you": "My systems are functioning optimally, thanks for asking! How can I assist you today?"
+};
 
 // Display random greeting
 function showRandomGreeting() {
@@ -43,17 +60,14 @@ function addMessage(sender, text) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', `${sender}-message`);
     
-    // Check if text contains code blocks or special formatting
     if (text.includes('```')) {
         const parts = text.split('```');
         let formattedText = '';
         
         for (let i = 0; i < parts.length; i++) {
             if (i % 2 === 1) {
-                // Code block
                 formattedText += `<div class="code-block">${parts[i]}</div>`;
             } else {
-                // Regular text
                 formattedText += parts[i];
             }
         }
@@ -89,29 +103,57 @@ function hideTyping() {
     }
 }
 
+// Generate a simple response when API fails
+function generateSimpleResponse(message) {
+    const lowerMsg = message.toLowerCase().trim();
+    
+    // Check for exact matches
+    if (simpleResponses[lowerMsg]) {
+        return simpleResponses[lowerMsg];
+    }
+    
+    // Check for partial matches
+    for (const [key, value] of Object.entries(simpleResponses)) {
+        if (lowerMsg.includes(key)) {
+            return value;
+        }
+    }
+    
+    // Random fallback with contextual start
+    const randomFallback = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+    return `${randomFallback} ${message} is an interesting topic. Could you elaborate more on what specifically you'd like to know?`;
+}
+
 // Send message to API
 async function sendMessage() {
     const message = userInput.value.trim();
     if (!message) return;
 
-    // Add user message to chat
     addMessage('user', message);
     userInput.value = '';
     
-    // Show typing indicator
     showTyping();
     
     try {
+        // First check if we have a simple response
+        const simpleResponse = generateSimpleResponse(message);
+        
         // Prepare the prompt with system instructions and user message
         const fullPrompt = `${systemPrompt}\n\nUser: ${message}`;
         
-        // Call Pollinations.AI API
+        // Call Pollinations.AI API with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
         const response = await fetch(`https://text.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
-            }
+            },
+            signal: controller.signal
         });
+        
+        clearTimeout(timeoutId);
         
         if (!response.ok) {
             throw new Error('API request failed');
@@ -120,15 +162,15 @@ async function sendMessage() {
         const data = await response.json();
         hideTyping();
         
-        // Add AI response to chat
         if (data && data.text) {
             addMessage('ai', data.text);
         } else {
-            addMessage('ai', "Hmm, I seem to have encountered a glitch. Could you try that again?");
+            addMessage('ai', simpleResponse);
         }
     } catch (error) {
         hideTyping();
-        addMessage('ai', "My circuits are a bit overloaded at the moment. Could you rephrase or try again shortly?");
+        const simpleResponse = generateSimpleResponse(message);
+        addMessage('ai', simpleResponse);
         console.error('API Error:', error);
     }
 }
