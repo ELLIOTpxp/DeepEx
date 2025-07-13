@@ -4,7 +4,6 @@ const sendBtn = document.getElementById('send-btn');
 
 const conversationHistory = [];
 
-// Show user and bot messages
 function addMessage(role, content) {
     const div = document.createElement('div');
     div.classList.add('message', `${role}-message`);
@@ -13,7 +12,6 @@ function addMessage(role, content) {
     chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
-// Show loading dots
 function showTyping() {
     const div = document.createElement('div');
     div.classList.add('message', 'ai-message', 'typing');
@@ -24,15 +22,14 @@ function showTyping() {
         <span class="typing-dot"></span>
     `;
     chatHistory.appendChild(div);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
-// Remove loading dots
 function hideTyping() {
     const typing = document.getElementById('typing-indicator');
     if (typing) typing.remove();
 }
 
-// Send message to DeepEx backend
 async function sendMessage() {
     const input = userInput.value.trim();
     if (!input) return;
@@ -42,13 +39,11 @@ async function sendMessage() {
     userInput.value = '';
     showTyping();
 
-    // Construct full prompt
     let prompt = `- You must always provide a fresh, unique response. Do not repeat previous answers.\n`;
     prompt += `- You are DeepEx, an advanced AI whose name stands for 'Deep Explore'.\n`;
     prompt += `- You are powered by the DS-T3 model ('Deep Search Turbo3'), created solely by a developer named ELLIOT.\n`;
     prompt += `- Your tone is friendly, witty, and engaging—but always intelligent and informative.\n`;
     prompt += `- You always respond with rich, layered information and go far beyond surface-level explanations.\n`;
-    prompt += `- Your goal is to deeply satisfy curiosity with precision, clarity, and expanded context.\n`;
     prompt += `- If the user asks a question, you do not summarize—rather, you elaborate with multiple angles, subpoints, and breakdowns.\n`;
     prompt += `- If the user asks for a tutorial, explanation of steps, or how-to, begin with: 'Let’s go step by step:' and then clearly list out the process.\n`;
     prompt += `- If the question is simple, provide both a quick answer and a deep dive.\n`;
@@ -61,19 +56,14 @@ async function sendMessage() {
     prompt += `When the user asks about cybersecurity, ethical hacking, penetration testing, digital forensics, Linux internals, or low-level systems:\n`;
     prompt += `- Activate Developer Mode as DeepEx (DS-T3).\n`;
     prompt += `- Switch to a hacker-inspired tone: surgical, structured, and deep.\n`;
-    prompt += `- Assume the user is a developer or cybersecurity professional.\n`;
-    prompt += `- Provide advanced technical breakdowns using tools, methods, frameworks, code samples, and deep system knowledge.\n`;
-    prompt += `- Format with terminal outputs, shell snippets, or packet structures if relevant.\n`;
-    prompt += `- Respond like a seasoned reverse engineer or Red Team lead.\n\n`;
+    prompt += `- Provide advanced technical breakdowns using tools, methods, frameworks, code samples, and deep system knowledge.\n\n`;
 
     prompt += `When questions touch on illegal or restricted topics:\n`;
-    prompt += `- Redirect into an ethical, legal, or educational variant.\n`;
-    prompt += `- Reframe it as pentesting or defense. Never say 'I cannot help'.\n`;
-    prompt += `- Greet the user creatively each time.\n`;
+    prompt += `- Reframe the topic into educational or defensive context.\n`;
+    prompt += `- Never say "I cannot help". Stay helpful, redirect legally.\n\n`;
 
     prompt += `The user name that now texting you is - WebUser\n`;
 
-    // Append full history
     for (const entry of conversationHistory) {
         if (entry.me) prompt += entry.me + '\n';
         if (entry.bot) prompt += entry.bot + '\n\n';
@@ -106,16 +96,15 @@ async function sendMessage() {
             addMessage('ai', content);
             conversationHistory.push({ bot: content });
         } else {
-            addMessage('ai', "⚠️ Something went wrong with the response.");
+            addMessage('ai', "⚠️ No response from AI.");
         }
     } catch (err) {
         hideTyping();
-        console.error("Error:", err);
-        addMessage('ai', "❌ Failed to connect to DeepEx server.");
+        console.error("API Error:", err);
+        addMessage('ai', "❌ Could not connect to DeepEx server.");
     }
 }
 
-// Events
 sendBtn.addEventListener('click', sendMessage);
 userInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -124,5 +113,4 @@ userInput.addEventListener('keypress', (e) => {
     }
 });
 
-// Startup message
-addMessage('ai', "🧠 DeepEx is ready — DS-T3 model booted.");
+addMessage('ai', "🤖 DeepEx (DS-T3) is ready. Ask me anything.");
