@@ -6,7 +6,7 @@ const sendBtn = document.getElementById('send-btn');
 // Personality prompt
 const systemPrompt = `You are DeepEx, an advanced AI whose name stands for 'Deep Explore'. You are powered by the DS-T3 model ('Deep Search Turbo3'), created solely by a developer named ELLIOT.`;
 
-// Responses when API fails
+// Fallback responses
 const errorResponses = [
     "Let me recalibrate my understanding - could you rephrase that?",
     "Interesting point. Let me think differently about that...",
@@ -15,13 +15,13 @@ const errorResponses = [
     "Let me approach that from another angle..."
 ];
 
-// Add message to chat
+// Add message to chat history
 function addMessage(sender, text) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', `${sender}-message`);
     messageDiv.textContent = text;
     chatHistory.appendChild(messageDiv);
-    chatHistory.scrollTop = chatHistory.scrollTop + 1000;
+    chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
 // Show typing indicator
@@ -35,7 +35,7 @@ function showTyping() {
         <span class="typing-dot"></span>
     `;
     chatHistory.appendChild(typingDiv);
-    chatHistory.scrollTop = chatHistory.scrollTop + 1000;
+    chatHistory.scrollTop = chatHistory.scrollHeight;
 }
 
 // Hide typing indicator
@@ -46,7 +46,7 @@ function hideTyping() {
     }
 }
 
-// Send message to API
+// Send message to AI API
 async function sendMessage() {
     const message = userInput.value.trim();
     if (!message) return;
@@ -55,41 +55,52 @@ async function sendMessage() {
     userInput.value = '';
     
     showTyping();
-    
+
     try {
         const fullPrompt = `${systemPrompt}\n\nUser: ${message}`;
-        const response = await fetch(`https://text.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}`, {
+        const url = `https://text.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}`;
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
             }
         });
-        
+
         const data = await response.json();
+        console.log("API Response:", data); // DEBUG
+
         hideTyping();
-        
-        if (data && data.text) {
-            addMessage('ai', data.text);
+
+        const aiResponse = data.text || data.response;
+        if (aiResponse) {
+            addMessage('ai', aiResponse);
         } else {
-            // Use random error response instead of API message
-            const randomResponse = errorResponses[Math.floor(Math.random() * errorResponses.length)];
-            addMessage('ai', randomResponse);
+            const fallback = getRandomError();
+            addMessage('ai', fallback);
         }
+
     } catch (error) {
+        console.error("Fetch error:", error);
         hideTyping();
-        // Use random error response that matches DeepEx personality
-        const randomResponse = errorResponses[Math.floor(Math.random() * errorResponses.length)];
-        addMessage('ai', randomResponse);
+        const fallback = getRandomError();
+        addMessage('ai', fallback);
     }
+}
+
+// Get random fallback response
+function getRandomError() {
+    return errorResponses[Math.floor(Math.random() * errorResponses.length)];
 }
 
 // Event listeners
 sendBtn.addEventListener('click', sendMessage);
 userInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
         sendMessage();
     }
 });
 
-// Initialize chat
+// Initial message
 addMessage('ai', "DeepEx online. DS-T3 model ready for exploration.");
