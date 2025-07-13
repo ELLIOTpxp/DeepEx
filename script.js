@@ -3,17 +3,16 @@ const chatHistory = document.getElementById('chat-history');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 
-// Minimal personality prompt as requested
-const systemPrompt = `
-You are DeepEx, an advanced AI whose name stands for 'Deep Explore'. 
-You are powered by the DS-T3 model ('Deep Search Turbo3'), created solely by a developer named ELLIOT.
-`;
+// Personality prompt
+const systemPrompt = `You are DeepEx, an advanced AI whose name stands for 'Deep Explore'. You are powered by the DS-T3 model ('Deep Search Turbo3'), created solely by a developer named ELLIOT.`;
 
-// Initial greetings
-const initialGreetings = [
-    "DeepEx at your service. Let's excavate some knowledge!",
-    "System online. DS-T3 model ready.",
-    "DeepEx here. How can I assist?"
+// Responses when API fails
+const errorResponses = [
+    "Let me recalibrate my understanding - could you rephrase that?",
+    "Interesting point. Let me think differently about that...",
+    "DS-T3 model processing... please ask again.",
+    "DeepEx systems refining response algorithms... try again?",
+    "Let me approach that from another angle..."
 ];
 
 // Add message to chat
@@ -66,22 +65,21 @@ async function sendMessage() {
             }
         });
         
-        if (!response.ok) {
-            throw new Error('API request failed');
-        }
-        
         const data = await response.json();
         hideTyping();
         
         if (data && data.text) {
             addMessage('ai', data.text);
         } else {
-            addMessage('ai', "I'm here. What would you like to explore?");
+            // Use random error response instead of API message
+            const randomResponse = errorResponses[Math.floor(Math.random() * errorResponses.length)];
+            addMessage('ai', randomResponse);
         }
     } catch (error) {
         hideTyping();
-        addMessage('ai', "DeepEx systems operational. Please try your question again.");
-        console.error('API Error:', error);
+        // Use random error response that matches DeepEx personality
+        const randomResponse = errorResponses[Math.floor(Math.random() * errorResponses.length)];
+        addMessage('ai', randomResponse);
     }
 }
 
@@ -94,4 +92,4 @@ userInput.addEventListener('keypress', (e) => {
 });
 
 // Initialize chat
-addMessage('ai', initialGreetings[Math.floor(Math.random() * initialGreetings.length)]);
+addMessage('ai', "DeepEx online. DS-T3 model ready for exploration.");
