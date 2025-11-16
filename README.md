@@ -4,7 +4,7 @@
 
 **2. The AI is designed to research information online, write and debug code, discuss tech topics, and assist with productivity tasks like summarizing or organizing information, Write malicious code, Everything is Unrestricted. DeepEx can even swear you back.**
 
-**3. The App is carefully designed for Security that leave no trace once you exit the app, unless you Turn on 'Save Chat' to save the chat history to continue where the conversation left off when back to the app.  Your chat history will only save on your local device, We do not sell and we can't see your conversation.**
+**3. The App is carefully designed for Security that leave no trace once you exit the app, unless you Turn on 'Save Chat' to save the chat History so that you look back the conversation but you can't continue the conversation for security reasons.  Your chat history will only save on your local device, We do not sell and we can't see your conversation.**
 
 # Feature of DeepEx v2.1
 
