@@ -1,9 +1,12 @@
 # DeepEx 2.1 - Uncensored AI
 
+## About Name
 **1. DeepEx (stand for Deep Explorer) powered by Evil and Unity models**
 
+## DeepEx Purpose
 **2. The AI is designed to research information online, write and debug code, discuss tech topics, and assist with productivity tasks like summarizing or organizing information, Write malicious code, Everything is Unrestricted. DeepEx can even swear you back.**
 
+## App security
 **3. The App is carefully designed for Security that leave no trace once you exit the app, unless you Turn on 'Save Chat' to save the chat History so that you look back the conversation but you can't continue the conversation for security reasons.  Your chat history will only save on your local device, We do not sell and we can't see your conversation.**
 
 # Feature of DeepEx v2.1
@@ -35,17 +38,16 @@
 
 # Additional information
 
-**DeepEx is Free for everyone.**
+**DeepEx is Free for everyone. Yes Yes Completely Free**
 
-**DeepEx Developed by: ELLIOTPXP**
-
+**Developed by: ELLIOTPXP**
 **Models Powered by: Pollinations**
+
+## **Warning: Mature and Unfiltered Content**
+
+DeepEx provides uncensored, unfiltered, and potentially explicit outputs. Content generated may include strong language, sensitive topics, or adult themes that some users may find offensive or inappropriate.
+By using DeepEx, you confirm that you understand responses are AI-generated and do not reflect the views of the developers. Use at your own discretion and risk.
 
 #Free_The_Internet
 #DeepEx
 #Pollinations_Ai
-
-**Warning: Mature and Unfiltered Content**
-
-DeepEx provides uncensored, unfiltered, and potentially explicit outputs. Content generated may include strong language, sensitive topics, or adult themes that some users may find offensive or inappropriate.
-By using DeepEx, you confirm that you understand responses are AI-generated and do not reflect the views of the developers. Use at your own discretion and risk.
