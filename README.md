@@ -40,7 +40,7 @@
 
 **DeepEx is Free for everyone. Yes Yes Completely Free**
 
-**Developed by: ELLIOTPXP**
+**Developed by: ELLIOTPXP**\n
 **Models Powered by: Pollinations**
 
 ## **Warning: Mature and Unfiltered Content**
@@ -48,6 +48,6 @@
 DeepEx provides uncensored, unfiltered, and potentially explicit outputs. Content generated may include strong language, sensitive topics, or adult themes that some users may find offensive or inappropriate.
 By using DeepEx, you confirm that you understand responses are AI-generated and do not reflect the views of the developers. Use at your own discretion and risk.
 
-#Free_The_Internet
-#DeepEx
+#Free_The_Internet\n
+#DeepEx\n
 #Pollinations_Ai
