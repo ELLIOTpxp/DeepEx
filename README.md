@@ -1,4 +1,4 @@
-​## DeepEx 2.1 - Uncensored AI
+# DeepEx 2.1 - Uncensored AI
 
 **1. DeepEx (stand for Deep Explorer) powered by Evil and Unity models**
 
